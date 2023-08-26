@@ -12,3 +12,6 @@ export const mapToOppositePlayer = {
   [Colour.BLACK]: Colour.RED,
   [Colour.RED]: Colour.BLACK,
 }
+
+export const coordinatesMatch = (coord1: Coordindates, coord2: Coordindates) =>
+  coord1[0] === coord2[0] && coord1[1] === coord2[1]

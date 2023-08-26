@@ -7,7 +7,7 @@ export const availableMoves = (
 ) => {
   const validMoves: MoveCard[] = gameState.players[
     gameState.currentTurn
-  ].moveCards.map(({ name, moves }) => ({
+  ].moveCards.map(({ name, moves, imageUrl }) => ({
     name,
     moves: moves.filter((move) => {
       const newPosition: Coordindates = [
@@ -16,6 +16,7 @@ export const availableMoves = (
       ]
       return checkValidMove(gameState, newPosition)
     }),
+    imageUrl,
   }))
 
   const removeEmptyMoves = validMoves.filter(
