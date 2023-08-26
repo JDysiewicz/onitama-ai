@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals"
-import { Colour, Coordindates, UnitType, WinConditionEnum } from "../types"
+import { Colour, Coordindates, UnitType, WinConditionEnum } from "../../types"
 import { newGame } from "./init-game"
-import { BLACK_TEMPLE_COORDS, RED_TEMPLE_COORDS } from "../utils/utils"
+import { BLACK_TEMPLE_COORDS, RED_TEMPLE_COORDS } from "../../utils/utils"
 import { checkWinConditionsMet } from "./win-conditions"
 
 describe("temple capture", () => {

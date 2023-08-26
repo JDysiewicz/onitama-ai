@@ -112,6 +112,9 @@ const generateNewTempleRow = (
 }
 
 const generateCards = (): MoveCard[] => {
-  const cards = moveCards.slice(0, 5) // TODO: make this randomly choose 5
+  // Pseudo-randomly get 5 elements from the cards array
+  // by doing a random sort and slicing the first 5 elements.
+  const randomlyOrderedCards = moveCards.sort(() => 0.5 - Math.random())
+  const cards = randomlyOrderedCards.slice(0, 5)
   return cards
 }
