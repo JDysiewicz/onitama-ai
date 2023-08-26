@@ -1,5 +1,5 @@
 import { Coordindates, GameState, Move, MoveCard } from "../types"
-import { mapToOppositePlayer } from "../utils"
+import { mapToOppositePlayer } from "../utils/utils"
 import { movePiece } from "./make-move"
 
 export const executeTurn = (

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material"
-import { Colour } from "./types"
+import { Colour } from "../../types"
 
 interface PlayerTurnIndicatorProps {
   playerColour: Colour

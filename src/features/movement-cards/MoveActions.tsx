@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "./store"
-import { availableMoves } from "./cli/make-move"
-import { Coordindates, GameState, Move, MoveCard } from "./types"
-import { updateMovePreviewCoords } from "./state/reducer"
+import { RootState } from "../../state/store"
+import { availableMoves } from "../../game-engine/make-move"
+import { Coordindates, GameState, Move, MoveCard } from "../../types"
+import { updateMovePreviewCoords } from "../../state/reducer"
 import { Button, ButtonGroup } from "@mui/material"
 import { useEffect, useState } from "react"
 

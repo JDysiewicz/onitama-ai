@@ -5,7 +5,10 @@ import {
   WinCondition,
   WinConditionEnum,
 } from "../types"
-import { mapColourToOpponentTempleCoords, mapToOppositePlayer } from "../utils"
+import {
+  mapColourToOpponentTempleCoords,
+  mapToOppositePlayer,
+} from "../utils/utils"
 
 export const checkWinConditionsMet = (
   gameState: GameState,

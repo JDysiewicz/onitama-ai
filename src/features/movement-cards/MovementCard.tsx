@@ -5,7 +5,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material"
-import { Coordindates, GameState, Move, MoveCard } from "./types"
+import { Coordindates, GameState, Move, MoveCard } from "../../types"
 import MoveActions from "./MoveActions"
 
 interface MovementCardProps {

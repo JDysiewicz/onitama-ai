@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
-import { Tile, TileType } from "./types"
-import { RootState } from "./store"
-import { useTileBackgroundColour } from "./hooks/use-tile-background-colour"
+import { Tile, TileType } from "../../types"
+import { RootState } from "../../state/store"
+import { useTileBackgroundColour } from "../../hooks/use-tile-background-colour"
 import { Button, Grid, Typography } from "@mui/material"
-import { updateSelectedUnitCoords } from "./state/reducer"
+import { updateSelectedUnitCoords } from "../../state/reducer"
 
 interface GameBoardTileProps {
   tile: Tile

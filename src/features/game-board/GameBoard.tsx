@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { RootState } from "./store"
+import { RootState } from "../../state/store"
 import GameBoardTile from "./GameBoardTile"
 import { Grid } from "@mui/material"
 

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux"
-import { RootState } from "../store"
+import { RootState } from "../state/store"
 import { Colour, Tile } from "../types"
 import { useEffect, useState } from "react"
-import { coordinatesMatch } from "../utils"
+import { coordinatesMatch } from "../utils/utils"
 
 export const useTileBackgroundColour = (tile: Tile) => {
   const selectedUnitCoords = useSelector(

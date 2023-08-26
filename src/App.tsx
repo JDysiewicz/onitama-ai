@@ -1,20 +1,20 @@
 import { useEffect } from "react"
 
-import { newGame } from "./cli/init-game"
+import { newGame } from "./game-engine/init-game"
 import { Colour, Coordindates, GameState, Move, MoveCard } from "./types"
 import { Grid } from "@mui/material"
-import { executeTurn } from "./cli/turns"
+import { executeTurn } from "./game-engine/turns"
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "./store"
+import { RootState } from "./state/store"
 import {
   updateGameState,
   updateMovePreviewCoords,
   updateSelectedUnitCoords,
 } from "./state/reducer"
-import PlayerMovementCards from "./PlayerMovementCards"
-import MovementCard from "./MovementCard"
-import GameBoard from "./GameBoard"
-import PlayerTurnIndicator from "./PlayerTurnIndicator"
+import PlayerMovementCards from "./features/movement-cards/PlayerMovementCards"
+import MovementCard from "./features/movement-cards/MovementCard"
+import GameBoard from "./features/game-board/GameBoard"
+import PlayerTurnIndicator from "./features/player-turn-indicator/PlayerTurnIndicator"
 
 const App = () => {
   const dispatch = useDispatch()

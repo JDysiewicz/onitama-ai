@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
-import { RootState } from "./store"
-import { Colour, Coordindates, GameState, Move, MoveCard } from "./types"
+import { RootState } from "../../state/store"
+import { Colour, Coordindates, GameState, Move, MoveCard } from "../../types"
 import { Grid } from "@mui/material"
 import MovementCard from "./MovementCard"
 
