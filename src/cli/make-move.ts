@@ -5,7 +5,7 @@ export const movePiece = (
   gameState: GameState,
   displacement: Move,
   pieceOriginalPosition: Coordindates
-): GameState => {
+): GameState | null => {
   const newPosition: Coordindates = [
     pieceOriginalPosition[0] + displacement[0],
     pieceOriginalPosition[1] + displacement[1],
@@ -30,6 +30,7 @@ export const movePiece = (
   )
   if (winConditionMet) {
     console.log(winConditionMet.message)
+    return null
     // TODO: reset game once win condition met
   }
 
@@ -81,11 +82,19 @@ export const checkValidMove = (
     newPosition[1] <= 4 &&
     newPosition[1] >= 0
 
+  if (!staysOnBoard) {
+    return false
+  }
+
   // Two pieces of the same colour cannot occupy the same square
   const isFreeSpace =
     gameState.board[newPosition[0]][newPosition[1]].occupied == null ||
     gameState.board[newPosition[0]][newPosition[1]].occupied?.colour !=
       gameState.currentTurn
 
-  return staysOnBoard && isFreeSpace
+  if (!isFreeSpace) {
+    return false
+  }
+
+  return true
 }

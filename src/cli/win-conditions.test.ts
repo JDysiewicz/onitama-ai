@@ -191,33 +191,4 @@ describe("master capture", () => {
     expect(result).not.toBeNull()
     expect(result?.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
   })
-
-  //   it("black-win by temple capture", () => {
-  //     const gameState = newGame()
-  //     gameState.currentTurn = Colour.BLACK
-
-  //     // make sure temple square is free
-  //     gameState.board[RED_TEMPLE_COORDS[0]][RED_TEMPLE_COORDS[1]].occupied = null
-
-  //     const newPosition = RED_TEMPLE_COORDS
-  //     const unitType = UnitType.MASTER
-
-  //     const result = checkWinConditionsMet(gameState, newPosition, unitType)
-  //     expect(result).not.toBeNull()
-  //     expect(result?.condition).toBe(WinConditionEnum.TEMPLE_CAPTURE)
-  //   })
-
-  //   it("soldier piece cant capture temple", () => {
-  //     const gameState = newGame()
-  //     gameState.currentTurn = Colour.BLACK
-
-  //     // make sure temple square is free
-  //     gameState.board[RED_TEMPLE_COORDS[0]][RED_TEMPLE_COORDS[1]].occupied = null
-
-  //     const newPosition = RED_TEMPLE_COORDS
-  //     const unitType = UnitType.SOLDIER
-
-  //     const result = checkWinConditionsMet(gameState, newPosition, unitType)
-  //     expect(result).toBeNull()
-  //   })
 })
