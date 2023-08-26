@@ -26,7 +26,7 @@ export const changeTurn = (
 
   // Give player new cards based on what was just used
   const newPlayerCards = [
-    gameState.players[gameState.currentTurn].moveCards.filter(
+    ...gameState.players[gameState.currentTurn].moveCards.filter(
       (card) => card.name != moveCardUsed.name
     ),
     gameState.nextMoveCard,

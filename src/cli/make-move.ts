@@ -1,5 +1,28 @@
-import { Board, Coordindates, GameState, Move, Piece } from "../types"
+import { Board, Coordindates, GameState, Move, MoveCard, Piece } from "../types"
 import { checkWinConditionsMet } from "./win-conditions"
+
+export const availableMoves = (
+  gameState: GameState,
+  piecePosition: Coordindates
+) => {
+  const validMoves: MoveCard[] = gameState.players[
+    gameState.currentTurn
+  ].moveCards.map(({ name, moves }) => ({
+    name,
+    moves: moves.filter((move) => {
+      const newPosition: Coordindates = [
+        piecePosition[0] + move[0],
+        piecePosition[1] + move[1],
+      ]
+      return checkValidMove(gameState, newPosition)
+    }),
+  }))
+
+  const removeEmptyMoves = validMoves.filter(
+    (moveCard) => moveCard.moves.length > 0
+  )
+  return removeEmptyMoves
+}
 
 export const movePiece = (
   gameState: GameState,
@@ -66,7 +89,10 @@ export const updateBoard = (
 ): Board => {
   const newBoard = structuredClone(gameState.board)
   newBoard[pieceOriginalPosition[0]][pieceOriginalPosition[1]].occupied = null
-  newBoard[newPosition[0]][newPosition[1]].occupied = piece
+  newBoard[newPosition[0]][newPosition[1]].occupied = {
+    ...piece,
+    position: newPosition,
+  }
 
   return newBoard
 }
