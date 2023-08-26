@@ -1,7 +1,7 @@
-import { Colour } from "./types"
+import { Colour, Coordindates } from "./types"
 
-export const BLACK_TEMPLE_COORDS = [0, 2]
-export const RED_TEMPLE_COORDS = [4, 2]
+export const BLACK_TEMPLE_COORDS: Coordindates = [0, 2]
+export const RED_TEMPLE_COORDS: Coordindates = [4, 2]
 
 export const mapColourToOpponentTempleCoords = {
   [Colour.BLACK]: RED_TEMPLE_COORDS,

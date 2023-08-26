@@ -42,12 +42,7 @@ const winByTempleCapture: WinCondition = {
 const winByMasterCapture: WinCondition = {
   condition: WinConditionEnum.MASTER_CAPTURE,
   message: "You captured the enemy master!",
-  checkFn: (
-    gameState: GameState,
-    newPosition: Coordindates,
-    // eslint-disable-next-line
-    pieceType: UnitType
-  ) => {
+  checkFn: (gameState: GameState, newPosition: Coordindates) => {
     return (
       gameState.board[newPosition[0]][newPosition[1]]?.occupied?.type ===
         UnitType.MASTER &&
