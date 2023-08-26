@@ -45,6 +45,7 @@ export type Piece = {
 
 export type MoveCard = {
   name: string
+  imageUrl: string
   moves: Move[]
 }
 

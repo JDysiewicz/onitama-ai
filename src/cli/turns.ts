@@ -10,8 +10,6 @@ export const executeTurn = (
 ): GameState | null => {
   const pieceMoved = movePiece(gameState, selectedMove, selectedPieceCoords)
   if (!pieceMoved) {
-    // if no gamestate returned, game was won by current player
-    console.log(`${gameState.currentTurn} has won!`)
     return null
   }
   const changedTurns = changeTurn(pieceMoved, selectedCard)

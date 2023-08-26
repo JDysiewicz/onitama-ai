@@ -52,7 +52,6 @@ export const movePiece = (
     pieceMoved.type
   )
   if (winConditionMet) {
-    console.log(winConditionMet.message)
     return null
     // TODO: reset game once win condition met
   }
@@ -61,7 +60,7 @@ export const movePiece = (
   const captureOpponentPiece =
     gameState.board[newPosition[0]][newPosition[1]].occupied
   if (captureOpponentPiece) {
-    console.log("You captured an enemy piece, nice")
+    // #TODO: Do something when capturing enemy piece?
   }
 
   // Update board positions

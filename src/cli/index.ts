@@ -5,12 +5,7 @@ import { executeTurn } from "./turns"
 
 export const runGame = async () => {
   let game: GameState | null = newGame()
-  let turns = 0
-  console.log(game)
   while (game != null) {
-    turns++
-    console.log(`GAMESTATE: TURN ${turns}`)
-    console.log(game)
     const pieces: Piece[] = getPieces(game)
 
     // Random selection for now
