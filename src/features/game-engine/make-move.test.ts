@@ -148,17 +148,6 @@ describe("movePiece", () => {
     expect(t).toThrow(Error)
   })
 
-  it("win condition met returns null gamestate", () => {
-    const gameState = newGame()
-
-    // Capture opposing master on start square
-    const displacement: Move = [4, 0]
-    const pieceOriginalPosition: Coordindates = [0, 2]
-
-    const result = movePiece(gameState, displacement, pieceOriginalPosition)
-    expect(result).toBeNull()
-  })
-
   it("regular move updates gamestate accordinly", () => {
     const originalGameState = newGame()
 

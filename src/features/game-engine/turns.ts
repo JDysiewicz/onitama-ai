@@ -1,6 +1,7 @@
 import { Coordindates, GameState, Move, MoveCard } from "../../types"
 import { mapToOppositePlayer } from "../../utils/utils"
 import { movePiece } from "./make-move"
+import { checkWinConditionsMet } from "./win-conditions"
 
 export const executeTurn = (
   gameState: GameState,
@@ -12,6 +13,13 @@ export const executeTurn = (
   if (!pieceMoved) {
     return null
   }
+
+  // Check if won
+  const winConditionMet = checkWinConditionsMet(pieceMoved)
+  if (winConditionMet) {
+    return null
+  }
+
   const changedTurns = changeTurn(pieceMoved, selectedCard)
   return changedTurns
 }

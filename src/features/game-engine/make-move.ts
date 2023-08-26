@@ -6,7 +6,6 @@ import {
   MoveCard,
   Piece,
 } from "../../types"
-import { checkWinConditionsMet } from "./win-conditions"
 
 export const availableMoves = (
   gameState: GameState,
@@ -53,17 +52,6 @@ export const movePiece = (
     throw new Error("Invalid move!")
   }
 
-  // Check if won
-  const winConditionMet = checkWinConditionsMet(
-    gameState,
-    newPosition,
-    pieceMoved.type
-  )
-  if (winConditionMet) {
-    return null
-    // TODO: reset game once win condition met
-  }
-
   // Capture opponent piece
   const captureOpponentPiece =
     gameState.board[newPosition[0]][newPosition[1]].occupied
@@ -79,12 +67,14 @@ export const movePiece = (
     pieceMoved
   )
 
-  return {
+  const newGameState = {
     board: newBoard,
     currentTurn: gameState.currentTurn,
     nextMoveCard: gameState.nextMoveCard,
     players: gameState.players,
   }
+
+  return newGameState
 }
 
 // Update gameboard via isolated mutation of a deepcopy

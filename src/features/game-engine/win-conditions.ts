@@ -1,5 +1,4 @@
 import {
-  Coordindates,
   GameState,
   UnitType,
   WinCondition,
@@ -11,14 +10,12 @@ import {
 } from "../../utils/utils"
 
 export const checkWinConditionsMet = (
-  gameState: GameState,
-  newPosition: Coordindates,
-  unitType: UnitType
+  gameState: GameState
 ): WinCondition | null => {
   const WIN_CONDITIONS = [winByMasterCapture, winByTempleCapture]
 
   const winConditionMet = WIN_CONDITIONS.find((condition) =>
-    condition.checkFn(gameState, newPosition, unitType)
+    condition.checkFn(gameState)
   )
 
   return winConditionMet ?? null
@@ -27,17 +24,16 @@ export const checkWinConditionsMet = (
 const winByTempleCapture: WinCondition = {
   condition: WinConditionEnum.TEMPLE_CAPTURE,
   message: "You captured the enemy temple!",
-  checkFn: (
-    gameState: GameState,
-    newPosition: Coordindates,
-    pieceType: UnitType
-  ) => {
-    return (
-      pieceType === UnitType.MASTER &&
-      newPosition.every(
-        (coord, idx) =>
-          coord === mapColourToOpponentTempleCoords[gameState.currentTurn][idx]
-      )
+  checkFn: (gameState: GameState) => {
+    const opponentTempleCoords =
+      mapColourToOpponentTempleCoords[gameState.currentTurn]
+    return !!(
+      gameState.board[opponentTempleCoords[0]][opponentTempleCoords[1]]
+        .occupied &&
+      gameState.board[opponentTempleCoords[0]][opponentTempleCoords[1]].occupied
+        ?.colour === gameState.currentTurn &&
+      gameState.board[opponentTempleCoords[0]][opponentTempleCoords[1]].occupied
+        ?.type === UnitType.MASTER
     )
   },
 }
@@ -45,12 +41,17 @@ const winByTempleCapture: WinCondition = {
 const winByMasterCapture: WinCondition = {
   condition: WinConditionEnum.MASTER_CAPTURE,
   message: "You captured the enemy master!",
-  checkFn: (gameState: GameState, newPosition: Coordindates) => {
-    return (
-      gameState.board[newPosition[0]][newPosition[1]]?.occupied?.type ===
-        UnitType.MASTER &&
-      gameState.board[newPosition[0]][newPosition[1]]?.occupied?.colour ===
-        mapToOppositePlayer[gameState.currentTurn]
+  checkFn: (gameState: GameState) => {
+    const flatenedBoard = gameState.board.flat(1)
+
+    const opponentMasterExists = flatenedBoard.some(
+      (tile) =>
+        tile.occupied &&
+        tile.occupied.colour === mapToOppositePlayer[gameState.currentTurn] &&
+        tile.occupied.type === UnitType.MASTER
     )
+
+    // If opponent master is not on the board, it has been taken and therefore this is a win
+    return !opponentMasterExists
   },
 }

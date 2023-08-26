@@ -15,11 +15,7 @@ export enum WinConditionEnum {
 
 export type WinCondition = {
   condition: WinConditionEnum
-  checkFn: (
-    gameState: GameState,
-    newPosition: Coordindates,
-    pieceType: UnitType
-  ) => boolean
+  checkFn: (gameState: GameState) => boolean
   message: string
 }
 
