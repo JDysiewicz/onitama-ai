@@ -12,14 +12,14 @@ export const useTileBackgroundColour = (tile: Tile) => {
     (state: RootState) => state.game.movePreviewCoords
   )
 
-  const mapPlayerColourToOccupiedColour = {
-    [Colour.BLACK]: "#d3d3d3",
-    [Colour.RED]: "#AA0000",
-  }
-
   const [backgroundColour, setBackgroundColour] = useState("#FFFFFF")
 
   useEffect(() => {
+    const mapPlayerColourToOccupiedColour = {
+      [Colour.BLACK]: "#d3d3d3",
+      [Colour.RED]: "#AA0000",
+    }
+
     const tileIsSelected = coordinatesMatch(
       selectedUnitCoords ?? [100, 100],
       tile.position
