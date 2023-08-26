@@ -1,7 +1,7 @@
-import { doStuff } from "./cli"
+import { runGame } from "./cli"
 
 const App = () => {
-  doStuff()
+  runGame()
   return <h1>Hello, world!</h1>
 }
 

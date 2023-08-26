@@ -1,7 +1,26 @@
 export type GameState = {
   board: Board
-  blackPlayer: Player
-  redPlayer: Player
+  players: {
+    [Colour.BLACK]: Player
+    [Colour.RED]: Player
+  }
+  currentTurn: Colour
+  nextMoveCard: MoveCard
+}
+
+export enum WinConditionEnum {
+  TEMPLE_CAPTURE = "temple-capture",
+  MASTER_CAPTURE = "master-capture",
+}
+
+export type WinCondition = {
+  condition: WinConditionEnum
+  checkFn: (
+    gameState: GameState,
+    newPosition: Coordindates,
+    pieceType: UnitType
+  ) => boolean
+  message: string
 }
 
 // 5x5 board
@@ -9,7 +28,7 @@ export type Board = Tile[][]
 
 export type Tile = {
   position: Coordindates
-  occupied: Meeple | null
+  occupied: Piece | null
   type: TileType
 }
 
@@ -18,7 +37,7 @@ export type Coordindates = [VerticalCoordinate, HorizontalCoordinate]
 export type VerticalCoordinate = number
 export type HorizontalCoordinate = number
 
-export type Meeple = {
+export type Piece = {
   type: UnitType
   colour: Colour
   position: Coordindates // Duplicate of 'Tile.position' for ease-of-use when performing moves.
@@ -37,9 +56,7 @@ export type HorizontalDisplacement = number
 
 export type Player = {
   moveCards: MoveCard[]
-  nextMoveCard: MoveCard | null // Can always see what they're next card will be, unless it's opponent's turn
   colour: Colour
-  board: Board
 }
 
 export enum Colour {
