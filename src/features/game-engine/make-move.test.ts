@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals"
 import { newGame } from "./init-game"
-import { Colour, Coordindates, Move, Piece, UnitType } from "../types"
+import { Colour, Coordindates, Move, Piece, UnitType } from "../../types"
 import { checkValidMove, movePiece, updateBoard } from "./make-move"
 
 describe("updateBoard", () => {

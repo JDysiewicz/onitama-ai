@@ -1,4 +1,11 @@
-import { Board, Coordindates, GameState, Move, MoveCard, Piece } from "../types"
+import {
+  Board,
+  Coordindates,
+  GameState,
+  Move,
+  MoveCard,
+  Piece,
+} from "../../types"
 import { checkWinConditionsMet } from "./win-conditions"
 
 export const availableMoves = (

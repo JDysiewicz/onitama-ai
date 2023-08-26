@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../state/store"
-import { availableMoves } from "../../game-engine/make-move"
+import { availableMoves } from "../game-engine/make-move"
 import { Coordindates, GameState, Move, MoveCard } from "../../types"
 import { updateMovePreviewCoords } from "../../state/reducer"
 import { Button, ButtonGroup } from "@mui/material"
@@ -49,6 +49,7 @@ const MoveActions: React.FC<MoveActionsProps> = ({ card, handleMove }) => {
 
   const movePreview = (move: Move, selectedUnitCoords: Coordindates | null) => {
     if (!selectedUnitCoords) {
+      dispatch(updateMovePreviewCoords(null))
       return
     }
     const previewCoords: Coordindates = [
@@ -73,6 +74,7 @@ const MoveActions: React.FC<MoveActionsProps> = ({ card, handleMove }) => {
             (validMove) => validMove[0] === move[0] && validMove[1] === move[1]
           )
 
+        // A move must also be in the player's hand to be valid.
         const isPlayersCard = gameState.players[gameState.currentTurn].moveCards
           .map((card) => card.name)
           .includes(card.name)
@@ -91,7 +93,7 @@ const MoveActions: React.FC<MoveActionsProps> = ({ card, handleMove }) => {
                 : () => {}
             }
             onMouseOver={() => movePreview(move, selectedUnitCoords)}
-            onMouseOut={() => dispatch(updateMovePreviewCoords(null))}
+            onMouseOut={() => movePreview(move, null)}
           >
             {move.join(",")}
           </Button>

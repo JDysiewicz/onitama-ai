@@ -1,4 +1,4 @@
-import { moveCards } from "../data/moveCards"
+import { moveCards } from "../../data/moveCards"
 import {
   Board,
   Colour,
@@ -9,7 +9,7 @@ import {
   TileType,
   UnitType,
   VerticalCoordinate,
-} from "../types"
+} from "../../types"
 
 export const newGame = (): GameState => {
   const initialBoard = newBoard()

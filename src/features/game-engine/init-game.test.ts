@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals"
 import { newGame } from "./init-game"
-import { Colour, UnitType } from "../types"
+import { Colour, UnitType } from "../../types"
 
 describe("game initialisation", () => {
   it("creates a new game with the correct sized board", () => {

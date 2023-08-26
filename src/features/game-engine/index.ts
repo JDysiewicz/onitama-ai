@@ -1,4 +1,4 @@
-import { GameState, MoveCard, Piece } from "../types"
+import { GameState, MoveCard, Piece } from "../../types"
 import { newGame } from "./init-game"
 import { availableMoves } from "./make-move"
 import { executeTurn } from "./turns"

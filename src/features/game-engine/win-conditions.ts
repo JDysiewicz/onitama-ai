@@ -4,11 +4,11 @@ import {
   UnitType,
   WinCondition,
   WinConditionEnum,
-} from "../types"
+} from "../../types"
 import {
   mapColourToOpponentTempleCoords,
   mapToOppositePlayer,
-} from "../utils/utils"
+} from "../../utils/utils"
 
 export const checkWinConditionsMet = (
   gameState: GameState,

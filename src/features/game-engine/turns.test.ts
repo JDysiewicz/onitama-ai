@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@jest/globals"
 import { newGame } from "./init-game"
-import { moveCards } from "../data/moveCards"
+import { moveCards } from "../../data/moveCards"
 import { changeTurn } from "./turns"
-import { Colour } from "../types"
+import { Colour } from "../../types"
 
 describe("changeTurn", () => {
   it("updates player turn", () => {

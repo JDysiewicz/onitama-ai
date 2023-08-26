@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 
-import { newGame } from "./game-engine/init-game"
+import { newGame } from "./features/game-engine/init-game"
 import { Colour, Coordindates, GameState, Move, MoveCard } from "./types"
 import { Grid } from "@mui/material"
-import { executeTurn } from "./game-engine/turns"
+import { executeTurn } from "./features/game-engine/turns"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "./state/store"
 import {
@@ -62,6 +62,7 @@ const App = () => {
 
   return (
     <Grid container rowGap={1}>
+      {/* Black cards (Black on left) */}
       <Grid item xs={3}>
         <PlayerMovementCards colour={Colour.BLACK} handleMove={handleMove} />
       </Grid>
@@ -70,6 +71,7 @@ const App = () => {
         <GameBoard />
       </Grid>
 
+      {/* Red cards (Red on right) */}
       <Grid item xs={3} columnGap={1}>
         <PlayerMovementCards colour={Colour.RED} handleMove={handleMove} />
       </Grid>
