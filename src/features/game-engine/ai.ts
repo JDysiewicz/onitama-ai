@@ -19,15 +19,13 @@ export const evaluateGameState = (gameState: GameState): number => {
   const DISTANCE_TO_TEMPLE_POINTS = 500
   const MORE_PIECES_POINTS = 100
 
-  // Max points if winning position found
-  const lastPlayerMoved = mapToOppositePlayer[gameState.currentTurn]
-  const winStatePoints = checkWinConditionsMet(gameState)
-    ? lastPlayerMoved === positiveColour // Is a winning position for lastPlayerMoved
-      ? WIN_STATE_POINTS // Positive = good for positiveColour
-      : WIN_STATE_POINTS * -1 // Negative = good for opponent
-    : 0 // If not a winning state, no points on offer
+  const winForPlayer = checkWinConditionsMet(gameState)
 
-  console.log(`WinStatePoints = ${winStatePoints}`)
+  const winStatePoints = !winForPlayer
+    ? 0 // If no winner, 0 points
+    : winForPlayer.playerColour === positiveColour
+    ? WIN_STATE_POINTS // Max points if positive favoured player win
+    : WIN_STATE_POINTS * -1 // Min points if negative favoured player win
 
   // Points for how close each other is to opponent temple
   const distanceToOpponentTemple = calculateDistanceToTemple(
@@ -50,21 +48,12 @@ export const evaluateGameState = (gameState: GameState): number => {
   const totalTempleDistancePoints =
     distanceToOpponentTemplePoints - opponentDistanceToTemplePoints
 
-  console.log(
-    `distanceToOpponentTemplePoints = ${distanceToOpponentTemplePoints}`
-  )
-  console.log(
-    `opponentDistanceToTemplePoints = ${opponentDistanceToTemplePoints}`
-  )
-  console.log(`totalTempleDistancePoints = ${totalTempleDistancePoints}`)
-
   // Points for how many units remaining over the opponent
   const differenceInPieces = calculateDifferenceInPiecesLeft(
     gameState,
     positiveColour
   )
   const differenceInPiecesPoints = differenceInPieces * MORE_PIECES_POINTS
-  console.log(`differenceInPiecesPoints = ${differenceInPiecesPoints}`)
 
   return winStatePoints + totalTempleDistancePoints + differenceInPiecesPoints
 }
@@ -112,12 +101,6 @@ const calculateDistanceToTemple = (gameState: GameState, colour: Colour) => {
   )
   const absHorizontalDistance = Math.abs(
     masterTile.position[1] - opponentTempleCoords[1]
-  )
-
-  console.log(
-    `Distance ${colour} to opponent temple: ${
-      absVerticalDistance + absHorizontalDistance
-    }`
   )
 
   return absVerticalDistance + absHorizontalDistance
