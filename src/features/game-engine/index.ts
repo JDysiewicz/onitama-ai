@@ -1,4 +1,5 @@
 import { GameState, MoveCard, Piece } from "../../types"
+import { wait } from "../../utils/utils"
 import { newGame } from "./init-game"
 import { availableMoves } from "./make-move"
 import { executeTurn } from "./turns"
@@ -45,9 +46,7 @@ export const runGame = async () => {
   }
 }
 
-const wait = async (seconds: number) => {
-  await new Promise((resolve) => setTimeout(resolve, seconds * 1000))
-}
+
 
 export const getPieces = (gameState: GameState) => {
   const flatBoard = gameState.board.flat(1)

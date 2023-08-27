@@ -8,6 +8,14 @@ export type GameState = {
   nextMoveCard: MoveCard
 }
 
+// Represents the depth used when calculating
+// best move.
+export enum AiDifficulty {
+  EASY = 1,
+  MEDIUM = 2,
+  HARD = 3,
+}
+
 export enum WinConditionEnum {
   TEMPLE_CAPTURE = "temple-capture",
   MASTER_CAPTURE = "master-capture",

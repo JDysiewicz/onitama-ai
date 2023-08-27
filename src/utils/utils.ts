@@ -15,3 +15,7 @@ export const mapToOppositePlayer = {
 
 export const coordinatesMatch = (coord1: Coordindates, coord2: Coordindates) =>
   coord1[0] === coord2[0] && coord1[1] === coord2[1]
+
+export const wait = async (seconds: number) => {
+  await new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}

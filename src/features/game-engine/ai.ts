@@ -143,6 +143,7 @@ export const evaluateGameState = (
   const WIN_STATE_POINTS = 10000
   const DISTANCE_TO_TEMPLE_POINTS = 500
   const MORE_PIECES_POINTS = 100
+  const UNITS_IN_PLAY_POINTS = 50 // incentivised to get units to center squares
 
   const winForPlayer = checkWinConditionsMet(gameState)
 
@@ -180,7 +181,12 @@ export const evaluateGameState = (
   )
   const differenceInPiecesPoints = differenceInPieces * MORE_PIECES_POINTS
 
-  let totalPoints = winStatePoints + differenceInPiecesPoints
+  const unitsInPlayPoints =
+    UNITS_IN_PLAY_POINTS *
+    calculatePiecesInPlay(gameState, maximisingPlayerColour)
+
+  let totalPoints =
+    winStatePoints + differenceInPiecesPoints + unitsInPlayPoints
 
   // Master distance to temple is only good if the temple capture
   // win condition is enabled
@@ -189,6 +195,30 @@ export const evaluateGameState = (
   }
 
   return totalPoints
+}
+
+const calculatePiecesInPlay = (
+  gameState: GameState,
+  maximisingColour: Colour
+) => {
+  const CENTRE_POSITIONS = [
+    [2, 1],
+    [2, 2],
+    [2, 3],
+  ]
+
+  const piecesInPlayForMaximisingColour = CENTRE_POSITIONS.reduce(
+    (acc, [v, h]) => {
+      const occupied = gameState.board[v][h].occupied
+      if (occupied && occupied.colour === maximisingColour) {
+        return acc + 1
+      }
+      return acc
+    },
+    0
+  )
+
+  return piecesInPlayForMaximisingColour
 }
 
 const calculateDifferenceInPiecesLeft = (

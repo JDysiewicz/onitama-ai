@@ -2,6 +2,7 @@ import { useEffect } from "react"
 
 import { newGame } from "./features/game-engine/init-game"
 import {
+  AiDifficulty,
   Colour,
   Coordindates,
   GameState,
@@ -24,6 +25,7 @@ import GameBoard from "./features/game-board/GameBoard"
 import PlayerTurnIndicator from "./features/player-turn-indicator/PlayerTurnIndicator"
 import { checkWinConditionsMet } from "./features/game-engine/win-conditions"
 import { minimax } from "./features/game-engine/ai"
+import { mapToOppositePlayer, wait } from "./utils/utils"
 
 const usePlayAgainstAi = (
   gameState: GameState | null,
@@ -37,6 +39,16 @@ const usePlayAgainstAi = (
   enabledWinConditions: WinConditionEnum[]
 ) => {
   useEffect(() => {
+    const makeAiMove = async (
+      gameState: GameState,
+      card: MoveCard,
+      move: Move,
+      piece: Coordindates
+    ) => {
+      await wait(1)
+      handleMove(move, card, gameState, piece)
+    }
+
     if (gameState && gameState.currentTurn === Colour.RED) {
       const bestMove = minimax(gameState, depth, true, enabledWinConditions)
 
@@ -48,13 +60,40 @@ const usePlayAgainstAi = (
         const originalCard = gameState.players[Colour.RED].moveCards.find(
           (card) => card.name === bestMove.moveCardName
         ) as MoveCard
-        handleMove(bestMove.move, originalCard, gameState, bestMove.pieceCoords)
+
+        makeAiMove(gameState, originalCard, bestMove.move, bestMove.pieceCoords)
       } else {
         console.log(JSON.stringify(bestMove))
         alert("Error processing AI move")
       }
     }
-  }, [gameState, depth, handleMove])
+  }, [gameState, depth, handleMove, enabledWinConditions])
+}
+
+// Each time state is updated,
+// check if this gameState is winning for a player.
+const useCheckWinningState = (
+  gameState: GameState | null,
+  resetGame: () => void
+) => {
+  useEffect(() => {
+    if (gameState) {
+      // Alert async so UI can update first.
+      const alertWinner = async (winner: Colour) => {
+        await wait(1)
+        alert(`Winner is: ${winner}!`)
+        resetGame()
+      }
+
+      const winningState = checkWinConditionsMet(gameState)
+      if (winningState) {
+        // Win check is done *after* game state is already updated to be the next person's turn
+        // therefore winner is the player who just moved.
+        const winner = mapToOppositePlayer[gameState.currentTurn]
+        alertWinner(winner)
+      }
+    }
+  }, [gameState, resetGame])
 }
 
 const App = () => {
@@ -85,19 +124,16 @@ const App = () => {
     selectedUnitCoords: Coordindates
   ) => {
     const newGameState = executeTurn(gameState, move, card, selectedUnitCoords)
-    const winningState = checkWinConditionsMet(newGameState)
-
-    if (winningState) {
-      alert(`Winner is: ${gameState.currentTurn}!`)
-      resetGame()
-      return
-    }
 
     // Continue to next turn with new gamestate
     nextTurn(newGameState)
   }
 
-  usePlayAgainstAi(gameState, handleMove, 2, [WinConditionEnum.MASTER_CAPTURE])
+  usePlayAgainstAi(gameState, handleMove, AiDifficulty.EASY, [
+    WinConditionEnum.MASTER_CAPTURE,
+  ])
+
+  useCheckWinningState(gameState, resetGame)
 
   if (!gameState) {
     return null
