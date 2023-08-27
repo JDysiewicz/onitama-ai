@@ -1,4 +1,4 @@
-import { Colour, Coordindates } from "../types"
+import { AiDifficulty, Colour, Coordindates } from "../types"
 
 export const BLACK_TEMPLE_COORDS: Coordindates = [0, 2]
 export const RED_TEMPLE_COORDS: Coordindates = [4, 2]
@@ -18,4 +18,10 @@ export const coordinatesMatch = (coord1: Coordindates, coord2: Coordindates) =>
 
 export const wait = async (seconds: number) => {
   await new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}
+
+export const mapAiDifficultyToString = {
+  [AiDifficulty.EASY]: "EASY",
+  [AiDifficulty.MEDIUM]: "MEDIUM",
+  [AiDifficulty.HARD]: "HARD",
 }

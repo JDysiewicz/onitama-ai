@@ -32,7 +32,7 @@ const MovementCard: React.FC<MovementCardProps> = ({ card, handleMove }) => {
           {card.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {card.name}
+          {card.description}
         </Typography>
       </CardContent>
       <CardActions>

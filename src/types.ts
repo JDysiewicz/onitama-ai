@@ -56,6 +56,7 @@ export type MoveCard = {
   name: string
   imageUrl: string
   moves: Move[]
+  description: string
 }
 
 // Move is still a tuple, however semantically different to 'Coordinates'

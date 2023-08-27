@@ -16,8 +16,8 @@ export const useTileBackgroundColour = (tile: Tile) => {
 
   useEffect(() => {
     const mapPlayerColourToOccupiedColour = {
-      [Colour.BLACK]: "#d3d3d3",
-      [Colour.RED]: "#AA0000",
+      [Colour.BLACK]: "#0A090380",
+      [Colour.RED]: "#FF000080",
     }
 
     const tileIsSelected = coordinatesMatch(
@@ -30,13 +30,13 @@ export const useTileBackgroundColour = (tile: Tile) => {
     )
 
     if (tileIsSelected) {
-      setBackgroundColour("#90EE90")
+      setBackgroundColour("#0A0903")
     } else if (tileIsHighlighted) {
-      setBackgroundColour("#FFFF00")
+      setBackgroundColour("#FF8200")
     } else if (tile.occupied) {
       setBackgroundColour(mapPlayerColourToOccupiedColour[tile.occupied.colour])
     } else {
-      setBackgroundColour("#FFFFFF")
+      setBackgroundColour("#FFEAAE")
     }
   }, [selectedUnitCoords, movePreviewCoords, tile])
 

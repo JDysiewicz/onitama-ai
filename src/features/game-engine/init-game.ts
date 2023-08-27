@@ -114,7 +114,19 @@ const generateNewTempleRow = (
 const generateCards = (): MoveCard[] => {
   // Pseudo-randomly get 5 elements from the cards array
   // by doing a random sort and slicing the first 5 elements.
-  const randomlyOrderedCards = moveCards.sort(() => 0.5 - Math.random())
+  const randomlyOrderedCards = shuffleArray(moveCards)
   const cards = randomlyOrderedCards.slice(0, 5)
   return cards
+}
+
+// Durstenfeld Shuffle Algorithm
+const shuffleArray = <T>(array: T[]): T[] => {
+  const copy = structuredClone(array)
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = copy[i]
+    copy[i] = copy[j]
+    copy[j] = temp
+  }
+  return copy
 }

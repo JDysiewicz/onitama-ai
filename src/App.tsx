@@ -1,8 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { newGame } from "./features/game-engine/init-game"
 import {
-  AiDifficulty,
   Colour,
   Coordindates,
   GameState,
@@ -10,7 +9,7 @@ import {
   MoveCard,
   WinConditionEnum,
 } from "./types"
-import { Grid } from "@mui/material"
+import { Grid, Typography } from "@mui/material"
 import { executeTurn } from "./features/game-engine/turns"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "./state/store"
@@ -23,82 +22,19 @@ import PlayerMovementCards from "./features/movement-cards/PlayerMovementCards"
 import MovementCard from "./features/movement-cards/MovementCard"
 import GameBoard from "./features/game-board/GameBoard"
 import PlayerTurnIndicator from "./features/player-turn-indicator/PlayerTurnIndicator"
-import { checkWinConditionsMet } from "./features/game-engine/win-conditions"
-import { minimax } from "./features/game-engine/ai"
-import { mapToOppositePlayer, wait } from "./utils/utils"
-
-const usePlayAgainstAi = (
-  gameState: GameState | null,
-  handleMove: (
-    move: Move,
-    card: MoveCard,
-    gameState: GameState,
-    selectedUnitCoords: Coordindates
-  ) => void,
-  depth: number,
-  enabledWinConditions: WinConditionEnum[]
-) => {
-  useEffect(() => {
-    const makeAiMove = async (
-      gameState: GameState,
-      card: MoveCard,
-      move: Move,
-      piece: Coordindates
-    ) => {
-      await wait(1)
-      handleMove(move, card, gameState, piece)
-    }
-
-    if (gameState && gameState.currentTurn === Colour.RED) {
-      const bestMove = minimax(gameState, depth, true, enabledWinConditions)
-
-      if (
-        !!bestMove.move &&
-        !!bestMove.moveCardName &&
-        !!bestMove.pieceCoords
-      ) {
-        const originalCard = gameState.players[Colour.RED].moveCards.find(
-          (card) => card.name === bestMove.moveCardName
-        ) as MoveCard
-
-        makeAiMove(gameState, originalCard, bestMove.move, bestMove.pieceCoords)
-      } else {
-        console.log(JSON.stringify(bestMove))
-        alert("Error processing AI move")
-      }
-    }
-  }, [gameState, depth, handleMove, enabledWinConditions])
-}
-
-// Each time state is updated,
-// check if this gameState is winning for a player.
-const useCheckWinningState = (
-  gameState: GameState | null,
-  resetGame: () => void
-) => {
-  useEffect(() => {
-    if (gameState) {
-      // Alert async so UI can update first.
-      const alertWinner = async (winner: Colour) => {
-        await wait(1)
-        alert(`Winner is: ${winner}!`)
-        resetGame()
-      }
-
-      const winningState = checkWinConditionsMet(gameState)
-      if (winningState) {
-        // Win check is done *after* game state is already updated to be the next person's turn
-        // therefore winner is the player who just moved.
-        const winner = mapToOppositePlayer[gameState.currentTurn]
-        alertWinner(winner)
-      }
-    }
-  }, [gameState, resetGame])
-}
+import { usePlayAgainstAi } from "./hooks/use-play-against-ai"
+import { useCheckWinningState } from "./hooks/use-check-winning-state"
+import SelectDifficulty from "./features/select-difficulty/SelectDifficulty"
+import { mapAiDifficultyToString } from "./utils/utils"
 
 const App = () => {
+  const [firstTimeLoad, setFirstTimeLoad] = useState(true)
   const dispatch = useDispatch()
+
   const gameState = useSelector((state: RootState) => state.game.gameState)
+  const aiDifficulty = useSelector(
+    (state: RootState) => state.game.aiDifficulty
+  )
 
   // Initial game setup
   useEffect(() => {
@@ -129,17 +65,33 @@ const App = () => {
     nextTurn(newGameState)
   }
 
-  usePlayAgainstAi(gameState, handleMove, AiDifficulty.EASY, [
+  // RED will move as AI
+  usePlayAgainstAi(gameState, handleMove, aiDifficulty, [
     WinConditionEnum.MASTER_CAPTURE,
   ])
 
-  useCheckWinningState(gameState, resetGame)
+  // Scan for winning state after each gameState update
+  useCheckWinningState(gameState, resetGame, [WinConditionEnum.MASTER_CAPTURE])
 
+  if (firstTimeLoad) {
+    return <SelectDifficulty setFirstTimeLoad={setFirstTimeLoad} />
+  }
+
+  // Keep TS happy when handling potentially null gamestate
   if (!gameState) {
     return null
   }
+
   return (
     <Grid container rowGap={1}>
+      <Grid item xs={12}>
+        <Typography variant="h2">Onitama AI</Typography>
+        {aiDifficulty && (
+          <Typography variant="subtitle1">
+            Ai Difficulty: {mapAiDifficultyToString[aiDifficulty]}
+          </Typography>
+        )}
+      </Grid>
       {/* Black cards (Black on left) */}
       <Grid item xs={3}>
         <PlayerMovementCards colour={Colour.BLACK} handleMove={handleMove} />

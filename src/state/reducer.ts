@@ -1,17 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { Coordindates, GameState } from "../types"
+import { AiDifficulty, Coordindates, GameState } from "../types"
 
 interface State {
   gameState: GameState | null
   selectedUnitCoords: Coordindates | null
   movePreviewCoords: Coordindates | null
+  aiDifficulty: AiDifficulty | null
 }
 
 const initialState: State = {
   gameState: null,
   selectedUnitCoords: null,
   movePreviewCoords: null,
+  aiDifficulty: null,
 }
 
 const gameSlice = createSlice({
@@ -37,6 +39,12 @@ const gameSlice = createSlice({
     ) => {
       state.movePreviewCoords = action.payload
     },
+    updateAiDifficulty: (
+      state: State,
+      action: PayloadAction<AiDifficulty | null>
+    ) => {
+      state.aiDifficulty = action.payload
+    },
   },
 })
 
@@ -44,5 +52,6 @@ export const {
   updateGameState,
   updateSelectedUnitCoords,
   updateMovePreviewCoords,
+  updateAiDifficulty,
 } = gameSlice.actions
 export default gameSlice.reducer

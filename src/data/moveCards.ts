@@ -1,13 +1,16 @@
 import { MoveCard } from "../types"
 
+// [-1,0],[-1,1]
+
 export const moveCards: MoveCard[] = [
   {
     moves: [
-      [1, 0],
       [-2, 0],
+      [1, 0],
     ],
-    name: "tiger",
+    name: "Tiger",
     imageUrl: "src/static/movement-cards/tiger.png",
+    description: "",
   },
   {
     moves: [
@@ -15,18 +18,20 @@ export const moveCards: MoveCard[] = [
       [0, 2],
       [0, -2],
     ],
-    name: "crab",
+    name: "Crab",
     imageUrl: "src/static/movement-cards/crab.png",
+    description: "",
   },
   {
     moves: [
+      [-1, 1],
       [1, 1],
       [1, -1],
-      [-1, 1],
       [-1, -1],
     ],
-    name: "monkey",
+    name: "Monkey",
     imageUrl: "src/static/movement-cards/monkey.png",
+    description: "",
   },
   {
     moves: [
@@ -34,8 +39,9 @@ export const moveCards: MoveCard[] = [
       [1, 1],
       [1, -1],
     ],
-    name: "crane",
+    name: "Crane",
     imageUrl: "src/static/movement-cards/crane.png",
+    description: "",
   },
   {
     moves: [
@@ -43,73 +49,81 @@ export const moveCards: MoveCard[] = [
       [0, 1],
       [0, -1],
     ],
-    name: "boar",
+    name: "Boar",
     imageUrl: "src/static/movement-cards/boar.png",
+    description: "",
   },
   {
     moves: [
-      [-1, -2],
       [-1, 2],
+      [-1, -2],
       [1, 1],
       [1, -1],
     ],
-    name: "dragon",
+    name: "Dragon",
     imageUrl: "src/static/movement-cards/dragon.png",
+    description: "",
   },
   {
     moves: [
-      [-1, 0],
-      [1, 0],
       [-1, 1],
+      [0, 1],
+      [0, -1],
       [-1, -1],
     ],
-    name: "elephant",
+    name: "Elephant",
     imageUrl: "src/static/movement-cards/elephant.png",
+    description: "",
   },
   {
     moves: [
-      [-1, -1],
       [-1, 1],
       [1, 0],
+      [-1, -1],
     ],
-    name: "mantis",
+    name: "Mantis",
     imageUrl: "src/static/movement-cards/mantis.png",
+    description: "",
   },
   {
     moves: [
-      [-1, -1],
-      [0, -2],
       [1, 1],
+      [0, -2],
+      [-1, -1],
     ],
-    name: "frog",
+    name: "Frog",
     imageUrl: "src/static/movement-cards/frog.png",
+    description: "",
   },
   {
     moves: [
-      [-1, -1],
-      [0, -1],
       [0, 1],
       [1, 1],
+      [0, -1],
+      [-1, -1],
     ],
-    name: "goose",
+    name: "Goose",
     imageUrl: "src/static/movement-cards/goose.png",
+    description: "",
   },
   {
     moves: [
       [-1, 0],
-      [0, -1],
       [1, 0],
+      [0, -1],
     ],
-    name: "horse",
+    name: "Horse",
     imageUrl: "src/static/movement-cards/horse.png",
+    description: "",
   },
   {
     moves: [
-      [-1, -1],
-      [1, -1],
       [0, 1],
+      [1, -1],
+      [-1, -1],
     ],
-    name: "eel",
+    name: "Eel",
     imageUrl: "src/static/movement-cards/eel.png",
+    description: "",
   },
 ]

@@ -61,7 +61,7 @@ const MoveActions: React.FC<MoveActionsProps> = ({ card, handleMove }) => {
 
   return (
     <ButtonGroup variant="contained">
-      {card.moves.map((move) => {
+      {card.moves.map((move, idx) => {
         const cardWithValidMoves = validCardMoves.find(
           (c) => c.name === card.name
         )
@@ -95,7 +95,7 @@ const MoveActions: React.FC<MoveActionsProps> = ({ card, handleMove }) => {
             onMouseOver={() => movePreview(move, selectedUnitCoords)}
             onMouseOut={() => movePreview(move, null)}
           >
-            {move.join(",")}
+            {idx + 1}
           </Button>
         )
       })}
