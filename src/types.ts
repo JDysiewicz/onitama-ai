@@ -13,9 +13,14 @@ export enum WinConditionEnum {
   MASTER_CAPTURE = "master-capture",
 }
 
+export type PlayerWin = {
+  winCondition: WinCondition
+  playerColour: Colour
+}
+
 export type WinCondition = {
   condition: WinConditionEnum
-  checkFn: (gameState: GameState) => boolean
+  checkFn: (gameState: GameState) => Colour | null
   message: string
 }
 

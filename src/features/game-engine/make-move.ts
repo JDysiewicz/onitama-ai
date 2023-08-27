@@ -35,7 +35,7 @@ export const movePiece = (
   gameState: GameState,
   displacement: Move,
   pieceOriginalPosition: Coordindates
-): GameState | null => {
+): GameState => {
   const newPosition: Coordindates = [
     pieceOriginalPosition[0] + displacement[0],
     pieceOriginalPosition[1] + displacement[1],

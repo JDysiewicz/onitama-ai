@@ -7,7 +7,6 @@ import { checkWinConditionsMet } from "./win-conditions"
 describe("temple capture", () => {
   it("red-win by temple capture", () => {
     const gameState = newGame()
-    gameState.currentTurn = Colour.RED
 
     // Put opponent master on temple
     // Move master to another square
@@ -24,12 +23,12 @@ describe("temple capture", () => {
 
     const result = checkWinConditionsMet(gameState)
     expect(result).not.toBeNull()
-    expect(result?.condition).toBe(WinConditionEnum.TEMPLE_CAPTURE)
+    expect(result?.playerColour).toBe(Colour.RED)
+    expect(result?.winCondition.condition).toBe(WinConditionEnum.TEMPLE_CAPTURE)
   })
 
   it("black-win by temple capture", () => {
     const gameState = newGame()
-    gameState.currentTurn = Colour.BLACK
 
     // Put opponent master on temple
     // Move master to another square
@@ -46,12 +45,12 @@ describe("temple capture", () => {
 
     const result = checkWinConditionsMet(gameState)
     expect(result).not.toBeNull()
-    expect(result?.condition).toBe(WinConditionEnum.TEMPLE_CAPTURE)
+    expect(result?.playerColour).toBe(Colour.BLACK)
+    expect(result?.winCondition.condition).toBe(WinConditionEnum.TEMPLE_CAPTURE)
   })
 
   it("soldier piece cant capture temple", () => {
     const gameState = newGame()
-    gameState.currentTurn = Colour.BLACK
 
     gameState.board[2][2].occupied = {
       colour: Colour.RED,
@@ -73,7 +72,6 @@ describe("temple capture", () => {
 describe("master capture", () => {
   it("red-win by master capture", () => {
     const gameState = newGame()
-    gameState.currentTurn = Colour.RED
 
     // Remove black master from board (assumed taken)
     gameState.board[BLACK_TEMPLE_COORDS[0]][BLACK_TEMPLE_COORDS[1]].occupied =
@@ -81,24 +79,24 @@ describe("master capture", () => {
 
     const result = checkWinConditionsMet(gameState)
     expect(result).not.toBeNull()
-    expect(result?.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
+    expect(result?.playerColour).toBe(Colour.RED)
+    expect(result?.winCondition.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
   })
 
   it("black-win by master capture", () => {
     const gameState = newGame()
-    gameState.currentTurn = Colour.BLACK
 
     // move master to a different square
     gameState.board[RED_TEMPLE_COORDS[0]][RED_TEMPLE_COORDS[1]].occupied = null
 
     const result = checkWinConditionsMet(gameState)
     expect(result).not.toBeNull()
-    expect(result?.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
+    expect(result?.playerColour).toBe(Colour.BLACK)
+    expect(result?.winCondition.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
   })
 
   it("master capture takes precedence if master capture on temple square", () => {
     const gameState = newGame()
-    gameState.currentTurn = Colour.BLACK
 
     gameState.board[RED_TEMPLE_COORDS[0]][RED_TEMPLE_COORDS[1]].occupied = {
       colour: Colour.BLACK,
@@ -108,6 +106,7 @@ describe("master capture", () => {
 
     const result = checkWinConditionsMet(gameState)
     expect(result).not.toBeNull()
-    expect(result?.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
+    expect(result?.playerColour).toBe(Colour.BLACK)
+    expect(result?.winCondition.condition).toBe(WinConditionEnum.MASTER_CAPTURE)
   })
 })

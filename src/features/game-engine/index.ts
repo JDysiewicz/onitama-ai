@@ -2,6 +2,7 @@ import { GameState, MoveCard, Piece } from "../../types"
 import { newGame } from "./init-game"
 import { availableMoves } from "./make-move"
 import { executeTurn } from "./turns"
+import { checkWinConditionsMet } from "./win-conditions"
 
 export const runGame = async () => {
   let game: GameState | null = newGame()
@@ -34,6 +35,11 @@ export const runGame = async () => {
       originalMoveCardSelected,
       selectedPieceCoords
     )
+
+    const winConditionMet = checkWinConditionsMet(game)
+    if (winConditionMet) {
+      game = null
+    }
 
     await wait(5)
   }

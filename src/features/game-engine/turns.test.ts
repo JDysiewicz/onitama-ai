@@ -1,26 +1,27 @@
 import { describe, expect, it } from "@jest/globals"
 import { newGame } from "./init-game"
 import { moveCards } from "../../data/moveCards"
-import { changeTurn } from "./turns"
+import { changeCards, changeTurn } from "./turns"
 import { Colour } from "../../types"
 
 describe("changeTurn", () => {
   it("updates player turn", () => {
     const originalGameState = newGame()
     originalGameState.currentTurn = Colour.BLACK
-    const moveCardUsed = moveCards[0]
 
-    const result = changeTurn(originalGameState, moveCardUsed)
+    const result = changeTurn(originalGameState)
 
     expect(result.currentTurn).toBe(Colour.RED)
   })
+})
 
+describe("changeCards", () => {
   it("updates next move card", () => {
     const originalGameState = newGame()
     originalGameState.currentTurn = Colour.BLACK
     const moveCardUsed = moveCards[0]
 
-    const result = changeTurn(originalGameState, moveCardUsed)
+    const result = changeCards(originalGameState, moveCardUsed)
 
     expect(result.nextMoveCard).toBe(moveCardUsed)
   })
@@ -30,7 +31,7 @@ describe("changeTurn", () => {
     originalGameState.currentTurn = Colour.BLACK
     const moveCardUsed = moveCards[0]
 
-    const result = changeTurn(originalGameState, moveCardUsed)
+    const result = changeCards(originalGameState, moveCardUsed)
 
     const blackPlayerCards = [
       ...new Set(

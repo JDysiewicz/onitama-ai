@@ -15,6 +15,7 @@ import PlayerMovementCards from "./features/movement-cards/PlayerMovementCards"
 import MovementCard from "./features/movement-cards/MovementCard"
 import GameBoard from "./features/game-board/GameBoard"
 import PlayerTurnIndicator from "./features/player-turn-indicator/PlayerTurnIndicator"
+import { checkWinConditionsMet } from "./features/game-engine/win-conditions"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -48,9 +49,9 @@ const App = () => {
     selectedUnitCoords: Coordindates
   ) => {
     const newGameState = executeTurn(gameState, move, card, selectedUnitCoords)
+    const winningState = checkWinConditionsMet(newGameState)
 
-    // Winner if no new gamestate
-    if (!newGameState) {
+    if (winningState) {
       alert(`Winner is: ${gameState.currentTurn}!`)
       resetGame()
       return

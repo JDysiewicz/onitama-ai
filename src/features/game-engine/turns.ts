@@ -1,35 +1,28 @@
 import { Coordindates, GameState, Move, MoveCard } from "../../types"
 import { mapToOppositePlayer } from "../../utils/utils"
 import { movePiece } from "./make-move"
-import { checkWinConditionsMet } from "./win-conditions"
 
 export const executeTurn = (
   gameState: GameState,
   selectedMove: Move,
   selectedCard: MoveCard,
   selectedPieceCoords: Coordindates
-): GameState | null => {
+): GameState => {
   const pieceMoved = movePiece(gameState, selectedMove, selectedPieceCoords)
-  if (!pieceMoved) {
-    return null
-  }
 
-  // Check if won
-  const winConditionMet = checkWinConditionsMet(pieceMoved)
-  if (winConditionMet) {
-    return null
-  }
+  // Update player hand
+  const changedCards = changeCards(pieceMoved, selectedCard)
 
-  const changedTurns = changeTurn(pieceMoved, selectedCard)
+  // Move to next player's turn
+  const changedTurns = changeTurn(changedCards)
+
   return changedTurns
 }
 
-export const changeTurn = (
+export const changeCards = (
   gameState: GameState,
   moveCardUsed: MoveCard
 ): GameState => {
-  const nextPlayerTurn = mapToOppositePlayer[gameState.currentTurn]
-
   // Give player new cards based on what was just used
   const newPlayerCards = [
     ...gameState.players[gameState.currentTurn].moveCards.filter(
@@ -40,7 +33,7 @@ export const changeTurn = (
 
   return {
     board: gameState.board,
-    currentTurn: nextPlayerTurn,
+    currentTurn: gameState.currentTurn,
     nextMoveCard: moveCardUsed,
     players: {
       ...gameState.players,
@@ -49,5 +42,15 @@ export const changeTurn = (
         moveCards: newPlayerCards,
       },
     },
+  }
+}
+
+export const changeTurn = (gameState: GameState): GameState => {
+  const nextPlayerTurn = mapToOppositePlayer[gameState.currentTurn]
+
+  return {
+    ...gameState,
+    board: gameState.board,
+    currentTurn: nextPlayerTurn,
   }
 }
