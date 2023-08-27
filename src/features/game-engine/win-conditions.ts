@@ -11,13 +11,19 @@ import {
   mapColourToOpponentTempleCoords,
   mapToOppositePlayer,
 } from "../../utils/utils"
+import { WIN_CONDITIONS_ENABLED } from "./env"
 
 export const checkWinConditionsMet = (
-  gameState: GameState
+  gameState: GameState,
+  conditionsEnabled: WinConditionEnum[] = WIN_CONDITIONS_ENABLED
 ): PlayerWin | null => {
-  const WIN_CONDITIONS = [winByMasterCapture, winByTempleCapture]
+  const ALL_WIN_CONDITIONS = [winByMasterCapture, winByTempleCapture]
 
-  const winConditionMet = WIN_CONDITIONS.find((condition) =>
+  const enabledConditions = ALL_WIN_CONDITIONS.filter((con) =>
+    conditionsEnabled.includes(con.condition)
+  )
+
+  const winConditionMet = enabledConditions.find((condition) =>
     condition.checkFn(gameState)
   )
 
@@ -33,6 +39,7 @@ export const checkWinConditionsMet = (
   return playerWin
 }
 
+// eslint-disable-next-line
 const winByTempleCapture: WinCondition = {
   condition: WinConditionEnum.TEMPLE_CAPTURE,
   message: "You captured the enemy temple!",

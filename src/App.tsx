@@ -1,7 +1,14 @@
 import { useEffect } from "react"
 
 import { newGame } from "./features/game-engine/init-game"
-import { Colour, Coordindates, GameState, Move, MoveCard } from "./types"
+import {
+  Colour,
+  Coordindates,
+  GameState,
+  Move,
+  MoveCard,
+  WinConditionEnum,
+} from "./types"
 import { Grid } from "@mui/material"
 import { executeTurn } from "./features/game-engine/turns"
 import { useDispatch, useSelector } from "react-redux"
@@ -16,6 +23,39 @@ import MovementCard from "./features/movement-cards/MovementCard"
 import GameBoard from "./features/game-board/GameBoard"
 import PlayerTurnIndicator from "./features/player-turn-indicator/PlayerTurnIndicator"
 import { checkWinConditionsMet } from "./features/game-engine/win-conditions"
+import { minimax } from "./features/game-engine/ai"
+
+const usePlayAgainstAi = (
+  gameState: GameState | null,
+  handleMove: (
+    move: Move,
+    card: MoveCard,
+    gameState: GameState,
+    selectedUnitCoords: Coordindates
+  ) => void,
+  depth: number,
+  enabledWinConditions: WinConditionEnum[]
+) => {
+  useEffect(() => {
+    if (gameState && gameState.currentTurn === Colour.RED) {
+      const bestMove = minimax(gameState, depth, true, enabledWinConditions)
+
+      if (
+        !!bestMove.move &&
+        !!bestMove.moveCardName &&
+        !!bestMove.pieceCoords
+      ) {
+        const originalCard = gameState.players[Colour.RED].moveCards.find(
+          (card) => card.name === bestMove.moveCardName
+        ) as MoveCard
+        handleMove(bestMove.move, originalCard, gameState, bestMove.pieceCoords)
+      } else {
+        console.log(JSON.stringify(bestMove))
+        alert("Error processing AI move")
+      }
+    }
+  }, [gameState, depth, handleMove])
+}
 
 const App = () => {
   const dispatch = useDispatch()
@@ -25,10 +65,6 @@ const App = () => {
   useEffect(() => {
     dispatch(updateGameState(newGame()))
   }, [dispatch])
-
-  if (!gameState) {
-    return null
-  }
 
   const resetGame = () => {
     dispatch(updateGameState(newGame()))
@@ -61,6 +97,11 @@ const App = () => {
     nextTurn(newGameState)
   }
 
+  usePlayAgainstAi(gameState, handleMove, 2, [WinConditionEnum.MASTER_CAPTURE])
+
+  if (!gameState) {
+    return null
+  }
   return (
     <Grid container rowGap={1}>
       {/* Black cards (Black on left) */}

@@ -1,9 +1,132 @@
-import { Colour, GameState, UnitType } from "../../types"
+import {
+  Colour,
+  Coordindates,
+  GameState,
+  Move,
+  UnitType,
+  WinConditionEnum,
+} from "../../types"
 import {
   mapColourToOpponentTempleCoords,
   mapToOppositePlayer,
 } from "../../utils/utils"
+import { WIN_CONDITIONS_ENABLED } from "./env"
+import { availableMoves } from "./make-move"
+import { executeTurn } from "./turns"
 import { checkWinConditionsMet } from "./win-conditions"
+
+// RED = maximising player colour
+export const minimax = (
+  gameState: GameState,
+  depth: number,
+  isRed: boolean,
+  enabledWinConditions: WinConditionEnum[] = WIN_CONDITIONS_ENABLED
+): {
+  score: number
+  moveCardName: string | null
+  move: Move | null
+  pieceCoords: Coordindates | null
+} => {
+  const isTerminalGameState = !!checkWinConditionsMet(gameState)
+  if (depth === 0 || isTerminalGameState) {
+    const score = evaluateGameState(gameState, enabledWinConditions)
+    return {
+      score,
+      moveCardName: null,
+      move: null,
+      pieceCoords: null,
+    }
+  }
+
+  if (isRed) {
+    let score = -1 * Infinity // Initialise to very low number; any positive is better
+    let moveCardName = null
+    let moveOnCard = null
+    let pieceCoords = null
+    const allPieceLocations = gameState.board
+      .flat(1)
+      .filter((tile) => tile.occupied && tile.occupied.colour === Colour.RED)
+      .map((tile) => tile.position)
+
+    // For every piece, get every single move which could be made
+    // (each piece, each card, each valid move on the card)
+    for (const coords of allPieceLocations) {
+      const allMovesWithCards = availableMoves(gameState, coords)
+      for (const card of allMovesWithCards) {
+        for (const move of card.moves) {
+          // Execute each move to get a new gameState and evaluate score
+          const newGameState = executeTurn(gameState, move, card, coords)
+          const result = minimax(
+            newGameState,
+            depth - 1,
+            false,
+            enabledWinConditions
+          )
+
+          // If maximising score and score of move is higher than current
+          // best move, overwrite existing best move and score.
+          if (result.score > score) {
+            score = result.score
+            moveCardName = card.name
+            moveOnCard = move
+            pieceCoords = coords
+          }
+        }
+      }
+    }
+
+    // Return the best move after every move evaluated
+    return {
+      score: score,
+      moveCardName,
+      move: moveOnCard,
+      pieceCoords,
+    }
+  } else {
+    let score = 1 * Infinity // Initialise to very large number; any negative is better
+    let moveCardName = null
+    let moveOnCard = null
+    let pieceCoords = null
+    const allPieceLocations = gameState.board
+      .flat(1)
+      .filter((tile) => tile.occupied && tile.occupied.colour === Colour.BLACK)
+      .map((tile) => tile.position)
+
+    // For every piece, get every single move which could be made
+    // (each piece, each card, each valid move on the card)
+    for (const coords of allPieceLocations) {
+      const allMovesWithCards = availableMoves(gameState, coords)
+      for (const card of allMovesWithCards) {
+        for (const move of card.moves) {
+          // Execute each move to get a new gameState and evaluate score
+          const newGameState = executeTurn(gameState, move, card, coords)
+          const result = minimax(
+            newGameState,
+            depth - 1,
+            true,
+            enabledWinConditions
+          )
+
+          // If maximising score and score of move is higher than current
+          // best move, overwrite existing best move and score.
+          if (result.score < score) {
+            score = result.score
+            moveCardName = card.name
+            moveOnCard = move
+            pieceCoords = coords
+          }
+        }
+      }
+    }
+    // Return the best move after every move evaluated
+    return {
+      score: score,
+      moveCardName,
+      move: moveOnCard,
+      pieceCoords,
+    }
+  }
+}
 
 // Returns an integer value representing how "good"
 // the game state would be for a specific colour.
@@ -11,9 +134,11 @@ import { checkWinConditionsMet } from "./win-conditions"
 // All based on Red, therefore
 // high values = better for Red,
 // low values = better for Black.
-export const evaluateGameState = (gameState: GameState): number => {
-  const positiveColour = Colour.RED
-
+export const evaluateGameState = (
+  gameState: GameState,
+  enabledWinConditions: WinConditionEnum[] = WIN_CONDITIONS_ENABLED
+): number => {
+  const maximisingPlayerColour = Colour.RED
   // Arbritary values
   const WIN_STATE_POINTS = 10000
   const DISTANCE_TO_TEMPLE_POINTS = 500
@@ -23,14 +148,14 @@ export const evaluateGameState = (gameState: GameState): number => {
 
   const winStatePoints = !winForPlayer
     ? 0 // If no winner, 0 points
-    : winForPlayer.playerColour === positiveColour
+    : winForPlayer.playerColour === maximisingPlayerColour
     ? WIN_STATE_POINTS // Max points if positive favoured player win
     : WIN_STATE_POINTS * -1 // Min points if negative favoured player win
 
   // Points for how close each other is to opponent temple
   const distanceToOpponentTemple = calculateDistanceToTemple(
     gameState,
-    positiveColour
+    maximisingPlayerColour
   )
   const distanceToOpponentTemplePoints =
     distanceToOpponentTemple !== 0
@@ -39,7 +164,7 @@ export const evaluateGameState = (gameState: GameState): number => {
 
   const opponentDistanceToTemple = calculateDistanceToTemple(
     gameState,
-    mapToOppositePlayer[positiveColour]
+    mapToOppositePlayer[maximisingPlayerColour]
   )
   const opponentDistanceToTemplePoints =
     opponentDistanceToTemple !== 0
@@ -51,11 +176,19 @@ export const evaluateGameState = (gameState: GameState): number => {
   // Points for how many units remaining over the opponent
   const differenceInPieces = calculateDifferenceInPiecesLeft(
     gameState,
-    positiveColour
+    maximisingPlayerColour
   )
   const differenceInPiecesPoints = differenceInPieces * MORE_PIECES_POINTS
 
-  return winStatePoints + totalTempleDistancePoints + differenceInPiecesPoints
+  let totalPoints = winStatePoints + differenceInPiecesPoints
+
+  // Master distance to temple is only good if the temple capture
+  // win condition is enabled
+  if (enabledWinConditions.includes(WinConditionEnum.TEMPLE_CAPTURE)) {
+    totalPoints += totalTempleDistancePoints
+  }
+
+  return totalPoints
 }
 
 const calculateDifferenceInPiecesLeft = (

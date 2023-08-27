@@ -3,6 +3,23 @@ import { newGame } from "./init-game"
 import { evaluateGameState } from "./ai"
 import { Colour, UnitType } from "../../types"
 
+// describe("minimax", () => {
+//   it("from initial board position", () => {
+//     const gameState = newGame()
+//     // Make it red's move as minimax based around red
+//     gameState.currentTurn = Colour.RED
+
+//     const predictedBestMove = minimax(gameState, 2, true)
+
+//     console.log(`Best move score = ${predictedBestMove.score}`)
+//     console.log(`Best move card = ${predictedBestMove.moveCard?.name}`)
+//     console.log(`Best move = ${predictedBestMove.move}`)
+//     console.log(`Best unit to move = ${predictedBestMove.pieceCoords}`)
+
+//     expect(true).toBe(false)
+//   })
+// })
+
 describe("evaluateGameState", () => {
   it("One less black piece is good for red", () => {
     const gameState = newGame()
