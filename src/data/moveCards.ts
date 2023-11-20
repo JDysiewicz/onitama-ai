@@ -1,6 +1,17 @@
 import { MoveCard } from "../types"
 
-// [-1,0],[-1,1]
+import elephantImage from "../static/movement-cards/elephant.png"
+import tigerImage from "../static/movement-cards/tiger.png"
+import crabImage from "../static/movement-cards/crab.png"
+import monkeyImage from "../static/movement-cards/monkey.png"
+import craneImage from "../static/movement-cards/crane.png"
+import boarImage from "../static/movement-cards/boar.png"
+import dragonImage from "../static/movement-cards/dragon.png"
+import mantisImage from "../static/movement-cards/mantis.png"
+import frogImage from "../static/movement-cards/frog.png"
+import gooseImage from "../static/movement-cards/goose.png"
+import horseImage from "../static/movement-cards/horse.png"
+import eelImage from "../static/movement-cards/eel.png"
 
 export const moveCards: MoveCard[] = [
   {
@@ -9,7 +20,7 @@ export const moveCards: MoveCard[] = [
       [1, 0],
     ],
     name: "Tiger",
-    imageUrl: "src/static/movement-cards/tiger.png",
+    imageUrl: tigerImage,
     description: "",
   },
   {
@@ -19,7 +30,7 @@ export const moveCards: MoveCard[] = [
       [0, -2],
     ],
     name: "Crab",
-    imageUrl: "src/static/movement-cards/crab.png",
+    imageUrl: crabImage,
     description: "",
   },
   {
@@ -30,7 +41,7 @@ export const moveCards: MoveCard[] = [
       [-1, -1],
     ],
     name: "Monkey",
-    imageUrl: "src/static/movement-cards/monkey.png",
+    imageUrl: monkeyImage,
     description: "",
   },
   {
@@ -40,7 +51,7 @@ export const moveCards: MoveCard[] = [
       [1, -1],
     ],
     name: "Crane",
-    imageUrl: "src/static/movement-cards/crane.png",
+    imageUrl: craneImage,
     description: "",
   },
   {
@@ -50,7 +61,7 @@ export const moveCards: MoveCard[] = [
       [0, -1],
     ],
     name: "Boar",
-    imageUrl: "src/static/movement-cards/boar.png",
+    imageUrl: boarImage,
     description: "",
   },
   {
@@ -61,7 +72,7 @@ export const moveCards: MoveCard[] = [
       [1, -1],
     ],
     name: "Dragon",
-    imageUrl: "src/static/movement-cards/dragon.png",
+    imageUrl: dragonImage,
     description: "",
   },
   {
@@ -72,7 +83,7 @@ export const moveCards: MoveCard[] = [
       [-1, -1],
     ],
     name: "Elephant",
-    imageUrl: "src/static/movement-cards/elephant.png",
+    imageUrl: elephantImage,
     description: "",
   },
   {
@@ -82,7 +93,7 @@ export const moveCards: MoveCard[] = [
       [-1, -1],
     ],
     name: "Mantis",
-    imageUrl: "src/static/movement-cards/mantis.png",
+    imageUrl: mantisImage,
     description: "",
   },
   {
@@ -92,7 +103,7 @@ export const moveCards: MoveCard[] = [
       [-1, -1],
     ],
     name: "Frog",
-    imageUrl: "src/static/movement-cards/frog.png",
+    imageUrl: frogImage,
     description: "",
   },
   {
@@ -103,7 +114,7 @@ export const moveCards: MoveCard[] = [
       [-1, -1],
     ],
     name: "Goose",
-    imageUrl: "src/static/movement-cards/goose.png",
+    imageUrl: gooseImage,
     description: "",
   },
   {
@@ -113,7 +124,7 @@ export const moveCards: MoveCard[] = [
       [0, -1],
     ],
     name: "Horse",
-    imageUrl: "src/static/movement-cards/horse.png",
+    imageUrl: horseImage,
     description: "",
   },
   {
@@ -123,7 +134,7 @@ export const moveCards: MoveCard[] = [
       [-1, -1],
     ],
     name: "Eel",
-    imageUrl: "src/static/movement-cards/eel.png",
+    imageUrl: eelImage,
     description: "",
   },
 ]
